@@ -1,29 +1,32 @@
 class ResponseDispatcher {
-    dispatchSuccess(res, data = {}, message= '') {
+    dispatchSuccess(res, data = {}, message= '', code = 200) {
         const response = {
-            code: 200,
+            message,
             data,
-            message
+            code
         }
 
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('charset', 'utf-8');
-        res.writeHead(200);
+        res.writeHead(code);
         res.write(this.jsonResponse(response)); 
         res.end();
     }
 
-    dispatchError(res, data = {}, message= ''){
+    dispatchError(res, data = {}, message= '', code = 422){
         const response = {
-            code: 402,
+            message,
             data,
+            code
         }
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('charset', 'utf-8');
+        res.writeHead(code);
         res.write(this.jsonResponse(response));
         res.end();
     }
 
     jsonResponse(response){
-        console.log(response);
         return JSON.stringify(response);
     }
 }

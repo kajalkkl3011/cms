@@ -2,9 +2,11 @@ const http = require('http')
 const Router = require('router');
 const finalhandler = require('finalhandler');
 const routes = require('./router/routes')
+const bodyParser = require('body-parser');
 
 const router = Router();
-router.use('/', routes)
+router.use(bodyParser.json());
+router.use('/', routes);
 
 const server = http.createServer((req, res) => {
  router(req, res, finalhandler(req, res));
