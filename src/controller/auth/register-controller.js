@@ -14,12 +14,24 @@ class RegisterController{
             console.log('response matched user => ', response);
             return responseDispatcher.dispatchSuccess(res, response,  "Login Success");
         } catch (error) {
-            console.log('inside catch');
+             console.log('inside catch');
             return responseDispatcher.dispatchError(res, {},  error.message);
         }
+    }
+        async fetchDetail(req, res) {
+            try {
+                const users = await userRepositories.fetchDetail();
+                // console.log('response matched user => ', response);
+                return responseDispatcher.dispatchSuccess(res, users,  " Success");
+            } catch (error) {
+                 console.log('inside catch');
+                return responseDispatcher.dispatchError(res, {},  error.message);
+            }
+
         
+        }
     }
 
-}
+
 const registerController = new RegisterController();
 module.exports = registerController;
