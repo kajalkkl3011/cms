@@ -1,38 +1,45 @@
-class ResponseDispatcher {
-    dispatchSuccess(res, data = {}, message= '', code = 200) {
+interface IResponse extends Response {
+    setHeader:any;
+    writeHead:any;
+    write:any;
+    end:any
+}
+
+export class ResponseDispatcher {
+    dispatchSuccess(res : IResponse, data = {}, message= '', statusCode = 200) {
         const response = {
             message,
+            code: statusCode,
             data,
-            code
+            
         }
 
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('charset', 'utf-8');
-        res.writeHead(code);
+        res.writeHead(200);
         res.write(this.jsonResponse(response)); 
         res.end();
     }
 
-    dispatchError(res, data = {}, message= '', code = 422){
+    dispatchError(res:IResponse, data = {}, message= '', statusCode = 402){
         const response = {
-            message,
+            code: statusCode,
             data,
-            code
+            message: message
         }
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('charset', 'utf-8');
-        res.writeHead(code);
+        res.writeHead(statusCode);
         res.write(this.jsonResponse(response));
         res.end();
     }
 
     jsonResponse(response){
+        // console.log(response);
         return JSON.stringify(response);
     }
+    
 }
 
 const responseDispatcher = new ResponseDispatcher();
-module.exports = responseDispatcher;
-
-
-
+export default  responseDispatcher;
